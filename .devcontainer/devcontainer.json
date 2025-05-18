@@ -1,0 +1,25 @@
+{
+	// https://aka.ms/devcontainer.json
+	"name": "Development",
+
+	// https://github.com/devcontainers/images/tree/main/src
+	"image": "mcr.microsoft.com/devcontainers/base:bookworm",
+
+	// https://github.com/devcontainers/features/tree/main/src
+	"features": {
+    "ghcr.io/devcontainers/features/node": {}
+  },
+
+  "onCreateCommand": "npm install",
+
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"mhutchie.git-graph",
+				"github.vscode-github-actions",
+        "Vue.volar"
+			]
+		}
+	}
+}
