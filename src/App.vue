@@ -23,7 +23,7 @@ fetchRepos()
     <v-divider />
     <v-card v-for="repo in repos" :key="repo.id" class="mx-auto my-8" elevation="16" max-width="344" :title="repo.name">
       <template v-slot:prepend>
-        <a :href="repo.url" target="_blank" rel="noopener">
+        <a :href="repo.html_url" target="_blank" rel="noopener">
           <v-icon color="black" icon="mdi-github"></v-icon>
         </a>
       </template>
