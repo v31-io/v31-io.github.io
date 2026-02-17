@@ -1,47 +1,22 @@
-<script setup>
-import { ref } from 'vue'
-import axios from 'axios'
-
-
-const repos = ref([])
-
-const fetchRepos = async () => {
-  try {
-    const response = await axios('https://api.github.com/orgs/v31-io/repos')
-    repos.value = response.data
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-fetchRepos()
+<script setup lang="ts">
+import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <v-container>
-    <v-card title="Hello World" class="mx-auto my-8" elevation="16" max-width="344" />
-    <v-divider />
-    <v-card v-for="repo in repos" :key="repo.id" class="mx-auto my-8" elevation="16" max-width="344" :title="repo.name">
-      <template v-slot:prepend>
-        <a :href="repo.html_url" target="_blank" rel="noopener">
-          <v-icon color="black" icon="mdi-github"></v-icon>
-        </a>
-      </template>
-      <template v-slot:append>
-        <a :href="repo.homepage" target="_blank" rel="noopener">
-          <v-icon color="black" icon="mdi-open-in-new"></v-icon>
-        </a>
-      </template>
-      <v-card-text>
-        {{ repo.description }}
-      </v-card-text>
-    </v-card>
-  </v-container>
+  <HelloWorld msg="Hello World" />
 </template>
 
-<style>
-body {
-  color: #fff;
-  background-color: #232629;
+<style scoped>
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
 }
 </style>
