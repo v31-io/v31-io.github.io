@@ -1,41 +1,90 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { ExternalLink } from "lucide-vue-next";
+import { siGithub } from "simple-icons";
 
-defineProps<{ msg: string }>()
+interface Repository {
+  id: number;
+  name: string;
+  description: string | null;
+  html_url: string;
+  homepage: string | null;
+}
 
-const count = ref(0)
+defineProps<{ msg: string }>();
+
+const repos = ref<Repository[]>([]);
+const loading = ref(true);
+
+const fetchRepos = async () => {
+  try {
+    const response = await axios("https://api.github.com/orgs/v31-dev/repos");
+    repos.value = response.data;
+  } catch (error) {
+    console.error("Error fetching repos:", error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchRepos();
+});
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
+  <div class="w-full min-h-screen bg-background text-foreground p-8">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-4xl font-bold mb-8 text-center">{{ msg }}</h1>
 
-  <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
+      <div v-if="loading" class="text-center py-12">
+        <p class="text-muted-foreground">Loading repositories...</p>
+      </div>
+
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card
+          v-for="repo in repos"
+          :key="repo.id"
+          class="bg-card border-border hover:border-primary transition-colors"
+        >
+          <CardHeader>
+            <div class="flex items-start justify-between">
+              <CardTitle class="text-xl text-foreground">{{
+                repo.name
+              }}</CardTitle>
+              <div class="flex gap-2">
+                <a
+                  v-if="repo.html_url"
+                  :href="repo.html_url"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-muted-foreground hover:text-foreground transition-colors"
+                  title="View on GitHub"
+                >
+                  <div class="w-5 h-5 [&>svg]:fill-current" v-html="siGithub.svg"></div>
+                </a>
+                <a
+                  v-if="repo.homepage"
+                  :href="repo.homepage"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-muted-foreground hover:text-foreground transition-colors"
+                  title="Visit homepage"
+                >
+                  <ExternalLink :size="20" />
+                </a>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <p class="text-muted-foreground text-sm">
+              {{ repo.description || "No description available" }}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   </div>
-
-  <p>
-    Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vwrgwrguwrgwrge + Vite startersss
-  </p>
-  <p>
-    Learn more about IDE Support for Vue in the
-    <a
-      href="https://vuejs.org/guide/scaling-up/tooling.html#ide-support"
-      target="_blank"
-      >Vue Docs Scaling up Guide</a
-    >.
-  </p>
-  <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
 </template>
-
-<style scoped>
-.read-the-docs {
-  color: #888;
-}
-</style>
