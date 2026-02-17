@@ -1,11 +1,11 @@
 {
-  "name": "v31.io",
+  "name": "v31.dev",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000 --host",
-    "build": "vite build",
+    "build": "vite build && echo 'v31.dev' > docs/CNAME",
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "format": "prettier --write src/"
