@@ -17,8 +17,7 @@
 		"vscode": {
 			"extensions": [
 				"mhutchie.git-graph",
-				"github.vscode-github-actions",
-        "Vue.volar"
+        		"Vue.volar"
 			]
 		}
 	}
